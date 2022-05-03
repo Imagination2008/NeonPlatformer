@@ -2,6 +2,8 @@ package com.jesse.neon.framework;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import com.jesse.neon.objects.Bullet;
 import com.jesse.neon.window.Handler;
 
 public class KeyInput extends KeyAdapter {
@@ -21,9 +23,12 @@ public class KeyInput extends KeyAdapter {
 			if(tempObject.getId() == ObjectId.Player) {
 				if(key == KeyEvent.VK_D) tempObject.setVelX(5);
 				if(key == KeyEvent.VK_A) tempObject.setVelX(-5);
-				if(key == KeyEvent.VK_SPACE && !tempObject.isJumping()) {
+				if(key == KeyEvent.VK_W && !tempObject.isJumping()) {
 					tempObject.setJumping(true);
-					tempObject.setVelY(-10);
+					tempObject.setVelY(-12);
+				}
+				if(key == KeyEvent.VK_SPACE) {
+					handler.addObject(new Bullet(tempObject.getX(), tempObject.getY() + 48, ObjectId.Bullet, tempObject.getFacing() * 10));
 				}
 			}
 		}

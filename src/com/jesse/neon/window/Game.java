@@ -10,7 +10,11 @@ import java.util.Random;
 
 import com.jesse.neon.framework.KeyInput;
 import com.jesse.neon.framework.ObjectId;
+import com.jesse.neon.framework.Texture;
+import com.jesse.neon.objects.Block;
+import com.jesse.neon.objects.Flag;
 import com.jesse.neon.objects.Player;
+
 
 public class Game extends Canvas implements Runnable
 {
@@ -21,27 +25,31 @@ public class Game extends Canvas implements Runnable
 	
 	public static int WIDTH, HEIGHT;
 	
-	private BufferedImage level = null;
+	public BufferedImage level = null;
 	
 	Handler handler;
 	Camera cam;
+	static Texture tex;
 	
 	Random rand = new Random();
+	
+	public static int LEVEL = 1;
 	
 	private void init() {
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
 		
-		BufferedImageLoader loader = new BufferedImageLoader();
-		level = loader.loadImage("/level.png");
+		tex = new Texture();
 		
-		handler = new Handler();
+		BufferedImageLoader loader = new BufferedImageLoader();
+		level = loader.loadImage("./res/level.png");
+		
+		cam = new Camera(0,0);
+		handler = new Handler(cam);
 		
 		cam = new Camera(0,0);
 		
-		handler.addObject(new Player(360, 500, handler, ObjectId.Player));
-		
-		handler.createLevel();
+		handler.LoadImageLevel(level);
 		
 		this.addKeyListener(new KeyInput(handler));
 	}
@@ -106,7 +114,7 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g.setColor(Color.black);
+		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		g2d.translate(cam.getX(), cam.getY()); //beginning of camera
@@ -116,9 +124,13 @@ public class Game extends Canvas implements Runnable
 		g2d.translate(-cam.getX(), -cam.getY()); //end of camera
 		
 		g.dispose();
-		bs.show();
-		
+		bs.show();	
 	}
+	
+	public static Texture getInstance() {
+		return tex;
+	}
+	
 	public static void main(String[] args) {
 		new Window(800, 600, "Neon Platformer Game Prototype", new Game());
 	}

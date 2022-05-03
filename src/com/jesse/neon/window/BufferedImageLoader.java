@@ -11,6 +11,8 @@ public class BufferedImageLoader {
 	
 	public BufferedImage loadImage(String path) {
 		
+		System.out.println(getClass().getResource("./res/level.png"));
+		
 		try {
 			image = ImageIO.read(getClass().getResource(path));
 		} catch (IOException e) {
@@ -20,4 +22,6 @@ public class BufferedImageLoader {
 		
 		return image;	
 	}
+	
+	
 }
